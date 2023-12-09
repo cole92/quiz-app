@@ -23,6 +23,13 @@ fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=mul
             question: loadedQuestionElement.question
         }
         const answerChoices = [...loadedQuestionElement.incorrect_answers];
+        formattedQuestion.answer = Math.floor(Math.random()*4) +1;
+        answerChoices.splice(formattedQuestion.answer-1, 0, loadedQuestionElement.correct_answer);
+
+        answerChoices.map((choice, index) => {
+            formattedQuestion['choice'+(index+1)] = choice;
+        })
+        return formattedQuestion;
     })
 })
 
