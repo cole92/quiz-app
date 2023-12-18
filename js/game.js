@@ -31,5 +31,32 @@ fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=mul
         })
         return formattedQuestion;
     })
+    startGame();
 })
 
+// Konstante 
+const CORRECT_BONUS = 10;
+const MAX_QUESTIONS = 5;
+
+const startGame = () => {
+    questionCounter = 0;
+    score = 0;
+    availableQuestions = [...questions];
+    getNewQuestion();
+    game.classList.remove('hidden');
+    loader.classList.add('hidden');
+}
+
+const getNewQuestion = () => {
+    if (availableQuestions === 0 || questionCounter >= MAX_QUESTIONS) {
+        localStorage.setItem('mostRecentScore', score);
+
+        return window.location.assign('end.html');
+    }
+    questionCounter++;
+    progressText.innerHTML = `Question ${questionCounter}/${MAX_QUESTIONS}`;
+    progressBarFull.style.width = `${(questionCounter/MAX_QUESTIONS)*100}%`;
+    const questionIndex = Math.floor(Math.random() * availableQuestions.length);
+    currentQuestions = availableQuestions[questionIndex];
+    question.innerHTML = currentQuestions.question;
+}
