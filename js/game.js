@@ -46,7 +46,7 @@ const startGame = () => {
     game.classList.remove('hidden');
     loader.classList.add('hidden');
 }
-
+// Function for new question
 const getNewQuestion = () => {
     if (availableQuestions === 0 || questionCounter >= MAX_QUESTIONS) {
         localStorage.setItem('mostRecentScore', score);
@@ -59,4 +59,32 @@ const getNewQuestion = () => {
     const questionIndex = Math.floor(Math.random() * availableQuestions.length);
     currentQuestions = availableQuestions[questionIndex];
     question.innerHTML = currentQuestions.question;
+
+    choices.forEach(choice => {
+        const number = choice.dataset['number'];
+        choice.innerHTML = currentQuestions['choice' + number]
+    })
+    availableQuestions.splice(questionIndex, 1)
+    acceptingAnswers = true
 }
+
+choices.forEach(choice => {
+    console.log(choice);
+    choice.addEventListener('click', e => {
+        if(!acceptingAnswers) return;
+
+        acceptingAnswers = false;
+        const selectedChoice = e.target;
+
+        const selectedAnswer = selectedChoice.dataset['number'];
+        const classToApply = selectedAnswer == currentQuestions.answer ? 'correct' : 'incorrect';
+        if(classToApply === 'correct') {
+            incrementScore(CORRECT_BONUS);
+        }
+        selectedChoice.parentElement.classList.add(classToApply);
+        setTimeout(() =>{
+            selectedChoice.parentElement.classList.remove(classToApply);
+            getNewQuestion();
+        },1000)
+    })
+})
