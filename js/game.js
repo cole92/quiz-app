@@ -4,6 +4,7 @@ const choices = Array.from(document.getElementsByClassName('choices-text'));
 const progressText = document.querySelector("#progressText");
 const scoresText = document.querySelector("#score");
 const progressBarFull = document.querySelector("#progressBarFull");
+console.log(progressBarFull);
 const loader = document.querySelector("#loader");
 const game = document.querySelector('#game');
 // Initializing variables to track the quiz state
@@ -78,6 +79,7 @@ choices.forEach(choice => {
 
         const selectedAnswer = selectedChoice.dataset['number'];
         const classToApply = selectedAnswer == currentQuestions.answer ? 'correct' : 'incorrect';
+        console.log(classToApply);
         if(classToApply === 'correct') {
             incrementScore(CORRECT_BONUS);
         }
@@ -88,3 +90,8 @@ choices.forEach(choice => {
         },1000)
     })
 })
+
+const incrementScore = number => {
+    score += number
+    scoresText.innerHTML = score
+}
